@@ -24,7 +24,7 @@ namespace ASOSUnitTests
         public async Task ParserShouldReturnListSkirts()
         {
             //arrange
-            var parser = new SearchResultsParser();
+            var parser = new AsosSearchResultsParser();
 
             //act
             var result = await parser.Parse(_testHtml);

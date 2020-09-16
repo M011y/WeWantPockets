@@ -1,19 +1,21 @@
 ﻿using AngleSharp;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WeWantPockets.Models;
 
 namespace WeWantPockets.Parsers
 {
-    public class SearchResultsParser
+    class BoohooSearchResultsParser
     {
         #region Construct
         readonly IBrowsingContext _angleSharpContext = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
         readonly IHtmlParser _angleSharpHtmlParser = null;
-        public SearchResultsParser()
+        public BoohooSearchResultsParser()
         {
             _angleSharpHtmlParser = _angleSharpContext.GetService<IHtmlParser>();
         }
@@ -25,28 +27,21 @@ namespace WeWantPockets.Parsers
 
             IHtmlDocument html = await _angleSharpHtmlParser.ParseDocumentAsync(searchPageHtml);
 
-            AngleSharp.Dom.IElement results = html.QuerySelector("section[data-auto-id=1]");
+            AngleSharp.Dom.IElement results = html.QuerySelector("ul");
 
             if (results == null)
                 return new Clothes[0];
 
-            AngleSharp.Dom.IElement[] articles = results.QuerySelectorAll("article").ToArray();
+            AngleSharp.Dom.IElement[] articles = results.QuerySelectorAll("li").ToArray();
 
             foreach (var article in articles)
             {
-                AngleSharp.Dom.IElement info = article.QuerySelector("a");
-                AngleSharp.Dom.IElement image = article.QuerySelector("image");
-
-                string desc = info.ToString();
-                int nameEndPosition = desc.IndexOf(",");
-                int priceStartPosition = desc.IndexOf(",") + 8;
-
                 ParsedClothes parsedClothes = new ParsedClothes
                 {
                     ProductId = article.GetAttribute("id"),
-                    Name = desc.Substring(0, nameEndPosition),
-                    Price = desc.Substring(priceStartPosition),
-                    ImageSrc = image.GetAttribute("src"),
+                    Name = ,
+                    Price = ,
+                    ImageSrc = ,
                 };
 
                 result.Add(Map(parsedClothes));

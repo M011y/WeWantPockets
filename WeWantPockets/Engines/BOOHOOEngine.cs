@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeWantPockets.Models;
-using WeWantPockets.Parsers;
 
-namespace WeWantPockets
+namespace WeWantPockets.Engines
 {
-    class ASOSEngine
+    class BOOHOOEngine
     {
-        private const string _baseUrl = "https://www.asos.com/";
+        private const string _baseUrl = "https://ie.boohoo.com/";
         private readonly WebClient _webClient = new WebClient();
-        private readonly AsosSearchResultsParser _searchResultsParser = new AsosSearchResultsParser();
+        private readonly BoohooSearchResultsParser _searchResultsParser = new BoohooSearchResultsParser();
 
         public async Task<Clothes[]> CrawlSearchResults(ClothesQuery query)
         {
@@ -23,9 +21,6 @@ namespace WeWantPockets
 
             return new Clothes[0];
         }
-
-        //send to website (through web client)
-        //send to parser
         private async Task<Clothes[]> GetResults(ClothesQuery query)
         {
             string content = BuildSearchRequestBody(query);
@@ -35,7 +30,6 @@ namespace WeWantPockets
             return await _searchResultsParser.Parse(response.Content);
         }
 
-        //build query
         private string BuildSearchRequestBody(ClothesQuery query)
         {
             StringBuilder contentBuilder = new StringBuilder();
@@ -43,25 +37,12 @@ namespace WeWantPockets
             string searchGender = (query.SearchGender ?? string.Empty);
             string searchClothing = (query.SearchClothing ?? string.Empty);
 
-            if (searchClothing.Contains("dresses"))
-            {
-                contentBuilder.Append(searchGender);
-                contentBuilder.Append("/");
-                contentBuilder.Append(searchClothing);
-                contentBuilder.Append("/cat/?cid=8799");
-            }
-
-            else if (searchClothing.Contains("skirts"))
-            {
-                contentBuilder.Append(searchGender);
-                contentBuilder.Append("/");
-                contentBuilder.Append(searchClothing);
-                contentBuilder.Append("/cat/?cid=2639");
-            }
+            contentBuilder.Append(searchGender);
+            contentBuilder.Append("/");
+            contentBuilder.Append(searchClothing);
 
             return contentBuilder.ToString();
         }
-
         private void CheckIfReponseIsSuccessful(WebResponse response)
         {
             if (!response.IsSuccessStatusCode)
