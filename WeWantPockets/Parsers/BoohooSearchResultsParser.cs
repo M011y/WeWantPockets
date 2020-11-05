@@ -39,9 +39,9 @@ namespace WeWantPockets.Parsers
                 ParsedClothes parsedClothes = new ParsedClothes
                 {
                     ProductId = article.GetAttribute("id"),
-                    Name = ,
-                    Price = ,
-                    ImageSrc = ,
+                    //Name = ,
+                    //Price = ,
+                    //ImageSrc = ,
                 };
 
                 result.Add(Map(parsedClothes));

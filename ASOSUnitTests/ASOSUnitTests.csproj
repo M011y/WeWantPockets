@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="ASOSResultsTestHTML.html" />
+    <Content Include="ASOSResultsTestHTML.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
